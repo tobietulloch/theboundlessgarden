@@ -1,1 +1,25 @@
-<?xml version='1.0' encoding='UTF-8'?><rss version='2.0' xmlns:atom='http://www.w3.org/2005/Atom'><channel><atom:link href='$linkFeed$' rel='self' type='application/rss+xml'/><title>The Boundless Garden</title><link>https:///boundlessgarden.tulloch.contact</link><description>a practical guide on how to escape technofeudalism</description><language>en-GB</language></channel></rss>
+\define MyFilter(MyTag,domain)
+[tag[rss]!sort[created]limit[100]]
+\end
+
+&#60;?xml version="1.0" encoding="UTF-8" ?&#62;<br />
+&#60;rss version="2.0"&#62;<br />
+&#60;channel&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;title&#62;
+{{$:/SiteTitle}}
+&#60;/title&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;link&#62;{{$:/discoverfeed!!serverdomain}}&#60;/link&#62;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;description&#62;
+{{$:/SiteSubtitle}}
+&#60;/description&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;lastBuildDate&#62;<$list filter="[!is[system]get[modified]!prefix[NaN]!sort[]limit[1]]" variable=modified><$list filter="[!is[system]modified<modified>]"><$view field="modified" format=date template="[UTC]ddd, 0DD mmm YYYY 0hh:0mm:0ss GMT"/></$list></$list>&#60;/lastBuildDate&#62;<br />
+<$set name="MyTag" value=Feed>
+<$set name="domain" value={{$:/discoverfeed!!serverdomain}}>
+<$list filter=<<MyFilter>>>
+&#60;item&#62;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;title&#62;
+<$view field="title"/>
+&#60;/title&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;link&#62;<<domain>><$view field="title" format="doubleurlencoded"/>.html&#60;/link&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;pubDate&#62;<$view field="modified" format=date template="[UTC]ddd, 0DD mmm YYYY 0hh:0mm:0ss GMT"/>&#60;/pubDate&#62;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;description&#62;&#60;![CDATA[<$view field="text" format=htmlwikified/>]]&#62;<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&#60;/description&#62;<br />&#60;/item&#62;<br />
+</$list></$set></$set>
+&#60;/channel&#62;<br />&#60;/rss&#62;<br />
